@@ -42,3 +42,6 @@ app.use("/api/ticketType", ticketTypeRoute);
 app.listen(3000, () => {
   console.log(`Server Started at ${3000}`);
 });
+
+
+module.exports = app;
