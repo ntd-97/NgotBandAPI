@@ -4,16 +4,24 @@ const ticketTypeController = {
   addTicketType: async (req, res) => {
     try {
       const newTicketType = new TicketType(req.body);
-      const savedTicketType = await newTicketType.save();
       if (req.body.show) {
         const show = await Show.findById(req.body.show);
-        const amount = show.amount + req.body.amount;
-        await show.updateOne({
-          $push: { ticketTypes: savedTicketType._id },
-          amount: amount,
-        });
+        if (show) {
+          const savedTicketType = await newTicketType.save();
+          const amount = show.amount + req.body.amount;
+          await show.updateOne({
+            $push: { ticketTypes: savedTicketType._id },
+            amount: amount,
+          });
+          res.status(200).json(savedTicketType);
+        } else {
+          res
+            .status(404)
+            .send({ success: false, message: "Show dose not exist" });
+        }
+      } else {
+        res.status(404).send({ success: false, message: "Show not found" });
       }
-      res.status(200).json(savedTicketType);
     } catch (error) {
       res.status(500).json(error);
     }
@@ -45,12 +53,10 @@ const ticketTypeController = {
         );
         res.status(200).json(updatedTicketType);
       } else {
-        res
-          .status(500)
-          .send({
-            success: false,
-            message: "Can't update this Ticket Type because Ticket was added",
-          });
+        res.status(500).send({
+          success: false,
+          message: "Can't update this Ticket Type because Ticket was added",
+        });
       }
     } catch (error) {
       res.status(500).json(error);
