@@ -13,7 +13,6 @@ const showController = {
   getAllShows: async (req, res) => {
     try {
       const shows = await Show.find();
-      if (!shows || shows.length <= 0) res.status(404).send("Shows Not found");
       res.status(200).json(shows);
     } catch (error) {
       res.status(500).json(error);
@@ -22,7 +21,6 @@ const showController = {
   getOneShow: async (req, res) => {
     try {
       const show = await Show.findById(req.params.id).populate("ticketTypes");
-      if (!show) res.status(404).send("Show Not found");
       res.status(200).json(show);
     } catch (error) {
       res.status(500).json(error);
@@ -30,13 +28,20 @@ const showController = {
   },
   updateShow: async (req, res) => {
     try {
-      const show = await Show.findById(req.body.id);
-      if (!show) res.status(404).send("Show Not found");
-      const updatedShow = await Show.findByIdAndUpdate(req.body.id, req.body, {
-        new: true,
-        runValidators: true,
-      });
-      res.status(200).json(updatedShow);
+      const show = await Show.findById(req.params.id);
+      if (!show) {
+        res.status(404).send({ success: false, message: "Show not found" });
+      } else {
+        const updatedShow = await Show.findByIdAndUpdate(
+          req.params.id,
+          req.body,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        res.status(200).json(updatedShow);
+      }
     } catch (error) {
       res.status(500).json(error);
     }
@@ -44,13 +49,16 @@ const showController = {
   deleteShow: async (req, res) => {
     try {
       const show = await Show.findById(req.params.id);
-      if (!show) res.status(404).send("Show Not found");
-      const { ticketTypes } = await Show.findById(req.params.id);
-      ticketTypes.forEach(async (ticketType) => {
-        await TicketType.findByIdAndDelete(ticketType);
-      });
-      const deletedShow = await Show.findByIdAndDelete(req.params.id);
-      res.status(200).json(deletedShow);
+      if (!show) {
+        res.status(404).send({ success: false, message: "Show not found" });
+      } else {
+        const { ticketTypes } = await Show.findById(req.params.id);
+        ticketTypes.forEach(async (ticketType) => {
+          await TicketType.findByIdAndDelete(ticketType);
+        });
+        const deletedShow = await Show.findByIdAndDelete(req.params.id);
+        res.status(200).json(deletedShow);
+      }
     } catch (error) {
       res.status(500).json(error);
     }

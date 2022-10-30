@@ -25,18 +25,26 @@ const userSchema = new mongoose.Schema({
 
 // TICKET SCHEMA
 const ticketSchema = new mongoose.Schema({
-  amount: { type: Number, required: true },
-  ticketType: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "TicketType",
+  createdDate: {
+    type: String,
+    required: true,
+    default: new Date().toLocaleString("en-GB", { timeZone: "Asia/Bangkok" }),
   },
+  amount: { type: Number, required: true },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   show: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Show",
+    required: true,
+  },
+  ticketType: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "TicketType",
+    required: true,
   },
 });
 

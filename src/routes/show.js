@@ -13,10 +13,9 @@ router.get("/", showController.getAllShows);
 router.get("/:id", showController.getOneShow);
 
 // UPDATE SHOW
-router.put("/", showController.updateShow);
+router.put("/:id", showController.updateShow);
 
 // DELETE SHOW
 router.delete("/:id", showController.deleteShow);
-
 
 module.exports = router;
