@@ -66,11 +66,19 @@ const userController = {
   deleteUser: async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
+      const tickets = await Ticket.find({ user: req.params.id });
       if (!user) {
         res.status(404).send({ success: false, message: "User not found" });
       } else {
-        const deletedUser = await User.findByIdAndDelete(req.params.id);
-        res.status(200).json(deletedUser);
+        if (tickets.length === 0) {
+          const deletedUser = await User.findByIdAndDelete(req.params.id);
+          res.status(200).json(deletedUser);
+        } else {
+          res.status(404).send({
+            success: false,
+            message: "delete tickets of this user before delete this user",
+          });
+        }
       }
     } catch (error) {
       res.status(500).json(error);

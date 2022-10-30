@@ -67,24 +67,33 @@ const ticketTypeController = {
       // remove ticket type in show and update amount
 
       const ticketType = await TicketType.findById(req.params.id);
+      const tickets = await Ticket.find({ ticketType: req.params.id });
       if (!ticketType) {
         res
           .status(404)
           .send({ success: false, message: "Ticket type not found" });
       } else {
-        const show = await Show.findById(ticketType.show);
+        if (tickets.length === 0) {
+          const show = await Show.findById(ticketType.show);
 
-        const amount = show.amount - ticketType.amount;
+          const amount = show.amount - ticketType.amount;
 
-        await show.updateOne({
-          $pull: { ticketTypes: req.params.id },
-          amount: amount,
-        });
-        // delete ticket type
-        const deletedTicketType = await TicketType.findByIdAndDelete(
-          req.params.id
-        );
-        res.status(200).json(deletedTicketType);
+          await show.updateOne({
+            $pull: { ticketTypes: req.params.id },
+            amount: amount,
+          });
+          // delete ticket type
+          const deletedTicketType = await TicketType.findByIdAndDelete(
+            req.params.id
+          );
+          res.status(200).json(deletedTicketType);
+        } else {
+          res.status(404).send({
+            success: false,
+            message:
+              "delete tickets of this ticket type before delete this ticket type",
+          });
+        }
       }
     } catch (error) {
       res.status(500).json(error);
