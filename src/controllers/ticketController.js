@@ -3,30 +3,39 @@ const { User, TicketType, Show, Ticket } = require("../models/model");
 const ticketController = {
   addTicket: async (req, res) => {
     try {
-      const newTicket = new Ticket(req.body);
-      const savedTicket = await newTicket.save();
-
-      // UPDATE SHOW AMOUNT
       const show = await Show.findById(req.body.show);
-      const showAmount = show.amount - req.body.amount;
-      await show.updateOne({ amount: showAmount });
-
-      // UPDATE TICKET TYPE AMOUNT
       const ticketType = await TicketType.findById(req.body.ticketType);
-      const ticketTypeAmount = ticketType.amount - req.body.amount;
-      await ticketType.updateOne({ amount: ticketTypeAmount });
+      const user = await User.findById(req.body.user);
 
-      // ADD USER'S TICKET
-      await User.findByIdAndUpdate(req.body.user, {
-        $push: { tickets: savedTicket._id },
-      });
+      if (show && ticketType && user) {
+        const newTicket = new Ticket(req.body);
+        const savedTicket = await newTicket.save();
 
-      // ADD SHOW'S TICKET
-      await Show.findByIdAndUpdate(req.body.show, {
-        $push: { tickets: savedTicket._id },
-      });
+        // UPDATE SHOW AMOUNT
+        const showAmount = show.amount - req.body.amount;
+        await show.updateOne({ amount: showAmount });
 
-      res.status(200).json(savedTicket);
+        // UPDATE TICKET TYPE AMOUNT
+        const ticketTypeAmount = ticketType.amount - req.body.amount;
+        await ticketType.updateOne({ amount: ticketTypeAmount });
+
+        // ADD USER'S TICKET
+        await User.findByIdAndUpdate(req.body.user, {
+          $push: { tickets: savedTicket._id },
+        });
+
+        // ADD SHOW'S TICKET
+        await Show.findByIdAndUpdate(req.body.show, {
+          $push: { tickets: savedTicket._id },
+        });
+
+        res.status(200).json(savedTicket);
+      } else {
+        res.status(404).send({
+          success: false,
+          message: "show, ticket type or user dose not exist",
+        });
+      }
     } catch (error) {
       res.status(500).json(error);
     }
