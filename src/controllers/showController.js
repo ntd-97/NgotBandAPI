@@ -54,7 +54,7 @@ const showController = {
       if (!show) {
         res.status(404).send({ success: false, message: "Show not found" });
       } else {
-        if (tickets.length === 0 && ticketTypes === 0) {
+        if (tickets.length === 0 && ticketTypes.length === 0) {
           const { ticketTypes } = await Show.findById(req.params.id);
           ticketTypes.forEach(async (ticketType) => {
             await TicketType.findByIdAndDelete(ticketType);
