@@ -1,4 +1,65 @@
 const mongoose = require("mongoose");
+// COMMON INFO
+const commonInfoSchema = new mongoose.Schema({
+  bannerImgUrl: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  description: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+});
+
+// MEMBER SCHEMA
+const memberSchema = new mongoose.Schema({
+  memberImgUrl: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+// ALBUMS SCHEMA
+const albumSchema = new mongoose.Schema({
+  albumImgUrl: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  linkToListen: {
+    type: String,
+    required: true,
+  },
+});
 
 // USER SCHEMA
 const userSchema = new mongoose.Schema({
@@ -102,5 +163,8 @@ let Ticket = mongoose.model("Ticket", ticketSchema);
 let Show = mongoose.model("Show", showSchema);
 let TicketType = mongoose.model("TicketType", ticketTypeSchema);
 let User = mongoose.model("User", userSchema);
+let CommonInfo = mongoose.model("CommonInfo", commonInfoSchema);
+let Member = mongoose.model("Member", memberSchema);
+let Album = mongoose.model("Album", albumSchema);
 
-module.exports = { Ticket, Show, TicketType, User };
+module.exports = { Ticket, Show, TicketType, User, CommonInfo, Member, Album };

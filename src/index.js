@@ -8,6 +8,9 @@ const showRoute = require("./routes/show");
 const ticketTypeRoute = require("./routes/ticketType");
 const userRoute = require("./routes/user");
 const ticketRoute = require("./routes/ticket");
+const commonInfoRoute = require("./routes/commonInfo");
+const memberRoute = require("./routes/member");
+const albumRoute = require("./routes/album");
 
 // MONGODB CONNECTION
 const mongoString = process.env.DATABASE_URL;
@@ -33,6 +36,9 @@ app.use("/api/show", showRoute);
 app.use("/api/ticketType", ticketTypeRoute);
 app.use("/api/user", userRoute);
 app.use("/api/ticket", ticketRoute);
+app.use("/api/commonInfo", commonInfoRoute);
+app.use("/api/member", memberRoute);
+app.use("/api/album", albumRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server Started`);
