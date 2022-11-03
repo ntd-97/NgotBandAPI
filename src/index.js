@@ -1,4 +1,6 @@
 require("dotenv").config();
+
+const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
@@ -28,6 +30,7 @@ database.once("connected", () => {
 
 // EXPRESS
 const app = express();
+app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(morgan("common"));
 
