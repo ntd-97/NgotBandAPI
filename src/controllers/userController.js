@@ -3,9 +3,16 @@ const { User, Ticket } = require("../models/model");
 const userController = {
   addUser: async (req, res) => {
     try {
-      const newUser = new User(req.body);
-      const savedUser = await newUser.save();
-      res.status(200).json(savedUser);
+      let userInfo = await User.find({ email: req.body.email });
+      if (userInfo[0]?._id) {
+        res
+          .status(404)
+          .send({ success: false, message: "Email was registered" });
+      } else {
+        const newUser = new User(req.body);
+        const savedUser = await newUser.save();
+        res.status(200).json(savedUser);
+      }
     } catch (error) {
       res.status(500).json(error);
     }
