@@ -33,7 +33,7 @@ const ticketController = {
       } else {
         res.status(404).send({
           success: false,
-          message: "show, ticket type or user dose not exist",
+          message: "show, loại vé hoặc tài khoản không tồn tại",
         });
       }
     } catch (error) {

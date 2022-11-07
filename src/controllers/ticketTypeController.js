@@ -17,10 +17,10 @@ const ticketTypeController = {
         } else {
           res
             .status(404)
-            .send({ success: false, message: "Show dose not exist" });
+            .send({ success: false, message: "Show không tồn tại" });
         }
       } else {
-        res.status(404).send({ success: false, message: "Show not found" });
+        res.status(404).send({ success: false, message: "Không tìm thấy show" });
       }
     } catch (error) {
       res.status(500).json(error);
@@ -33,7 +33,7 @@ const ticketTypeController = {
       if (!ticketType) {
         res
           .status(404)
-          .send({ success: false, message: "Ticket type not found" });
+          .send({ success: false, message: "Không tìm thấy loại vé" });
       } else if (tickets.length <= 0) {
         // UPDATE AMOUNT SHOW
         const show = await Show.findById(ticketType.show);
@@ -55,7 +55,7 @@ const ticketTypeController = {
       } else {
         res.status(500).send({
           success: false,
-          message: "Can't update this Ticket Type because Ticket was added",
+          message: "Không thể cập nhật loại vé vì vé đã được thêm",
         });
       }
     } catch (error) {
@@ -71,7 +71,7 @@ const ticketTypeController = {
       if (!ticketType) {
         res
           .status(404)
-          .send({ success: false, message: "Ticket type not found" });
+          .send({ success: false, message: "Không tìm thấy loại vé" });
       } else {
         if (tickets.length === 0) {
           const show = await Show.findById(ticketType.show);
@@ -91,7 +91,7 @@ const ticketTypeController = {
           res.status(404).send({
             success: false,
             message:
-              "delete tickets of this ticket type before delete this ticket type",
+              "Xóa vé đã thêm của loại vé trước khi xóa loại vé",
           });
         }
       }
