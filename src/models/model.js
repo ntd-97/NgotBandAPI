@@ -89,7 +89,7 @@ const ticketSchema = new mongoose.Schema({
   createdDate: {
     type: String,
     required: true,
-    default: new Date(Date.now()).toLocaleString("en-GB", {
+    default: new Date().toLocaleDateString("en-GB", {
       timeZone: "Asia/Bangkok",
     }),
   },
