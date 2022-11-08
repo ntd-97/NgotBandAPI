@@ -89,7 +89,9 @@ const ticketSchema = new mongoose.Schema({
   createdDate: {
     type: String,
     required: true,
-    default: new Date().toLocaleString("en-GB", { timeZone: "Asia/Bangkok" }),
+    default: new Date(Date.now()).toLocaleString("en-GB", {
+      timeZone: "Asia/Bangkok",
+    }),
   },
   amount: { type: Number, required: true },
   user: {
