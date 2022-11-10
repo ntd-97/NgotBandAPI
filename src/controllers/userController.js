@@ -7,7 +7,7 @@ const userController = {
       if (userInfo[0]?._id) {
         res
           .status(404)
-          .send({ success: false, message: "Email đã được đăng ký" });
+          .send({ success: false, message: "Email đã được đăng ký!" });
       } else {
         const newUser = new User(req.body);
         const savedUser = await newUser.save();
@@ -44,7 +44,7 @@ const userController = {
       } else {
         res
           .status(401)
-          .json({ success: false, message: "Email hoặc password không đúng" });
+          .json({ success: false, message: "Email hoặc password không đúng!" });
       }
     } catch (error) {
       res.status(500).json(error);
@@ -54,7 +54,7 @@ const userController = {
     try {
       const user = await User.findById(req.params.id);
       if (!user) {
-        res.status(404).send({ success: false, message: "Không tìm thấy tài khoản" });
+        res.status(404).send({ success: false, message: "Không tìm thấy tài khoản!" });
       } else {
         const updatedUser = await User.findByIdAndUpdate(
           req.params.id,
@@ -75,7 +75,7 @@ const userController = {
       const user = await User.findById(req.params.id);
       const tickets = await Ticket.find({ user: req.params.id });
       if (!user) {
-        res.status(404).send({ success: false, message: "Không tìm thấy tài khoản" });
+        res.status(404).send({ success: false, message: "Không tìm thấy tài khoản!" });
       } else {
         if (tickets.length === 0) {
           const deletedUser = await User.findByIdAndDelete(req.params.id);
@@ -83,7 +83,7 @@ const userController = {
         } else {
           res.status(404).send({
             success: false,
-            message: "Xóa vé của tài khoản trước khi xóa tài khoản",
+            message: "Xóa vé của tài khoản trước khi xóa tài khoản!",
           });
         }
       }

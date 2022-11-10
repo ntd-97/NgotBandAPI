@@ -30,7 +30,7 @@ const showController = {
     try {
       const show = await Show.findById(req.params.id);
       if (!show) {
-        res.status(404).send({ success: false, message: "Không tìm thấy show" });
+        res.status(404).send({ success: false, message: "Không tìm thấy show!" });
       } else {
         const updatedShow = await Show.findByIdAndUpdate(
           req.params.id,
@@ -52,7 +52,7 @@ const showController = {
       const tickets = await Ticket.find({ show: req.params.id });
       const ticketTypes = await TicketType.find({ show: req.params.id });
       if (!show) {
-        res.status(404).send({ success: false, message: "Không tìm thấy show" });
+        res.status(404).send({ success: false, message: "Không tìm thấy show!" });
       } else {
         if (tickets.length === 0 && ticketTypes.length === 0) {
           const { ticketTypes } = await Show.findById(req.params.id);
@@ -65,7 +65,7 @@ const showController = {
           res.status(404).send({
             success: false,
             message:
-              "Xóa vé, loại vé của show trước khi xóa show",
+              "Xóa vé, loại vé của show trước khi xóa show!",
           });
         }
       }

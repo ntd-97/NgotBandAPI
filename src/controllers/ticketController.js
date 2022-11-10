@@ -33,7 +33,7 @@ const ticketController = {
       } else {
         res.status(404).send({
           success: false,
-          message: "show, loại vé hoặc tài khoản không tồn tại",
+          message: "show, loại vé hoặc tài khoản không tồn tại!",
         });
       }
     } catch (error) {
